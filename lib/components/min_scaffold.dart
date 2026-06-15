@@ -6,7 +6,9 @@ import 'min_drawer.dart';
 /// Andamiaje de página con app bar, body, bottom bar, FAB y drawers.
 ///
 /// Maneja automáticamente el padding de la status bar, la barra de
-/// navegación del sistema y el teclado.
+/// navegación del sistema y el teclado. Cuando el teclado aparece,
+/// el body se desplaza hacia arriba para que los inputs siempre
+/// sean visibles.
 ///
 /// ### Uso básico
 /// ```dart
@@ -47,6 +49,7 @@ class MinScaffold extends StatelessWidget {
     this.drawerDuration = const Duration(milliseconds: 180),
     this.drawerCurve = Curves.easeOut,
     this.backgroundColor,
+    this.resizeToAvoidBottomInset = true,
   });
 
   final Widget body;
@@ -70,10 +73,18 @@ class MinScaffold extends StatelessWidget {
   final Curve drawerCurve;
   final Color? backgroundColor;
 
+  /// Si es `true`, el body se desplaza hacia arriba cuando el teclado
+  /// aparece, asegurando que los inputs siempre sean visibles.
+  /// Por defecto es `true`.
+  final bool resizeToAvoidBottomInset;
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
     final mediaQuery = MediaQuery.of(context);
+    final keyboardHeight = resizeToAvoidBottomInset
+        ? mediaQuery.viewInsets.bottom
+        : 0.0;
 
     final systemNavbarPadding = mediaQuery.padding.bottom;
     final bottomBar = bottomNavigationBar == null
@@ -86,7 +97,12 @@ class MinScaffold extends StatelessWidget {
     Widget content = Column(
       children: [
         ?appBar,
-        Expanded(child: body),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: keyboardHeight),
+            child: body,
+          ),
+        ),
         ?bottomBar,
       ],
     );

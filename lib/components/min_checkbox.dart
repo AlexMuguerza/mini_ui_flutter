@@ -41,6 +41,7 @@ class MinCheckbox extends StatefulWidget {
     this.checkColor,
     this.checkIcon,
     this.checkPainter,
+    this.semanticLabel,
   });
 
   final bool value;
@@ -53,6 +54,7 @@ class MinCheckbox extends StatefulWidget {
   final Color? checkColor;
   final Widget? checkIcon;
   final CustomPainter? checkPainter;
+  final String? semanticLabel;
 
   @override
   State<MinCheckbox> createState() => _MinCheckboxState();
@@ -121,6 +123,7 @@ class _MinCheckboxState extends State<MinCheckbox> {
     return Semantics(
       checked: widget.value,
       enabled: _enabled,
+      label: widget.semanticLabel,
       child: Focus(
         focusNode: _focusNode,
         autofocus: widget.autofocus,

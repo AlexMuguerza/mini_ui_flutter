@@ -31,6 +31,7 @@ class AppSection {
   static const appBar = AppSection._('App Bar', TablerIcons.layout_navbar);
   static const datePicker = AppSection._('Date Picker', TablerIcons.calendar);
   static const select = AppSection._('Select', TablerIcons.list);
+  static const buttonGroup = AppSection._('Button Group', TablerIcons.layout_list);
 
   static const values = [
     buttons,
@@ -41,6 +42,7 @@ class AppSection {
     appBar,
     datePicker,
     select,
+    buttonGroup,
   ];
 }
 
@@ -100,6 +102,7 @@ class AppViewState {
     this.obscureTextValue = false,
     this.selectedSection = AppSection.buttons,
     this.checkboxValue = true,
+    this.selectedButtonGroupIndex = 0,
   });
 
   final bool isLoading;
@@ -112,6 +115,7 @@ class AppViewState {
   final bool obscureTextValue;
   final AppSection selectedSection;
   final bool checkboxValue;
+  final int selectedButtonGroupIndex;
   AppViewState copyWith({
     bool? isLoading,
     String? selectedValue,
@@ -123,6 +127,7 @@ class AppViewState {
     bool? obscureTextValue,
     AppSection? selectedSection,
     bool? checkboxValue,
+    int? selectedButtonGroupIndex,
   }) {
     return AppViewState(
       isLoading: isLoading ?? this.isLoading,
@@ -135,6 +140,7 @@ class AppViewState {
       obscureTextValue: obscureTextValue ?? this.obscureTextValue,
       selectedSection: selectedSection ?? this.selectedSection,
       checkboxValue: checkboxValue ?? this.checkboxValue,
+      selectedButtonGroupIndex: selectedButtonGroupIndex ?? this.selectedButtonGroupIndex,
     );
   }
 }
@@ -184,5 +190,9 @@ class AppViewCubit extends Cubit<AppViewState> {
 
   void toggleCheckboxValue() {
     emit(state.copyWith(checkboxValue: !state.checkboxValue));
+  }
+
+  void setSelectedButtonGroupIndex(int index) {
+    emit(state.copyWith(selectedButtonGroupIndex: index));
   }
 }

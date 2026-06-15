@@ -338,6 +338,8 @@ class MinInput extends StatefulWidget {
       horizontal: 12,
       vertical: 8,
     ),
+    this.showCounter = false,
+    this.semanticLabel,
   }) : // La altura fija, si se especifica, debe ser positiva.
        assert(height == null || height > 0, 'height debe ser > 0'),
 
@@ -553,6 +555,17 @@ class MinInput extends StatefulWidget {
   ///
   /// También influye en el cálculo de altura dinámica cuando [height] es `null`.
   final EdgeInsets contentPadding;
+
+  /// Si es `true` y se especifica [maxLength], muestra un contador
+  /// de caracteres debajo del campo, alineado a la derecha.
+  /// No tapa el texto escrito.
+  final bool showCounter;
+
+  /// Etiqueta de accesibilidad del campo.
+  ///
+  /// Describe el propósito del campo para lectores de pantalla
+  /// (e.g. "Correo electrónico", "Contraseña").
+  final String? semanticLabel;
 
   @override
   State<MinInput> createState() => _MinInputState();
@@ -1034,32 +1047,72 @@ class _MinInputState extends State<MinInput> {
 
     // inputArea ya contiene leading + texto + trailing dentro del borde,
     // por lo que se devuelve directamente como content sin Row extra.
-    final Widget content = inputArea;
+    Widget content = inputArea;
+
+    // -----------------------------------------------------------------------
+    // Contador de caracteres (opcional)
+    // -----------------------------------------------------------------------
+
+    final showCounterWidget = widget.showCounter &&
+        widget.maxLength != null &&
+        widget.maxLength! > 0;
+
+    if (showCounterWidget) {
+      final currentLength = _controller.text.length;
+      final maxLength = widget.maxLength!;
+      final counterColor = currentLength >= maxLength
+          ? theme.colors.destructive
+          : theme.colors.mutedForeground;
+
+      content = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          content,
+          SizedBox(height: theme.spacing.s1),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              '$currentLength / $maxLength',
+              style: theme.typography.small.copyWith(color: counterColor),
+            ),
+          ),
+        ],
+      );
+    }
 
     // -----------------------------------------------------------------------
     // Mensaje de error (opcional)
     // -----------------------------------------------------------------------
 
-    /// Si no hay error, devolver el campo directamente sin Column extra.
-    if (!hasError) return content;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        content,
-        // El texto de error solo se muestra cuando se proporciona un mensaje.
-        // La variante de error sin errorText solo cambia el estilo visual.
-        if (widget.errorText?.isNotEmpty ?? false) ...[
-          const SizedBox(height: 4),
-          Text(
-            widget.errorText!,
-            style: theme.typography.small.copyWith(
-              color: theme.colors.destructive,
+    if (hasError) {
+      content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          content,
+          if (widget.errorText?.isNotEmpty ?? false) ...[
+            const SizedBox(height: 4),
+            Text(
+              widget.errorText!,
+              style: theme.typography.small.copyWith(
+                color: theme.colors.destructive,
+              ),
             ),
-          ),
+          ],
         ],
-      ],
+      );
+    }
+
+    // -----------------------------------------------------------------------
+    // Semantics wrapper (accessibility)
+    // -----------------------------------------------------------------------
+
+    return Semantics(
+      label: widget.semanticLabel,
+      enabled: widget.enabled,
+      textField: true,
+      child: content,
     );
   }
 }

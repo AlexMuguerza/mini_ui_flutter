@@ -37,6 +37,7 @@ class MinSwitch extends StatefulWidget {
     this.disabled = false,
     this.focusNode,
     this.autofocus = false,
+    this.semanticLabel,
   });
 
   final bool value;
@@ -45,6 +46,7 @@ class MinSwitch extends StatefulWidget {
   final bool disabled;
   final FocusNode? focusNode;
   final bool autofocus;
+  final String? semanticLabel;
 
   @override
   State<MinSwitch> createState() => _MinSwitchState();
@@ -95,6 +97,7 @@ class _MinSwitchState extends State<MinSwitch> {
     return Semantics(
       toggled: widget.value,
       enabled: _enabled,
+      label: widget.semanticLabel,
       child: Focus(
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,

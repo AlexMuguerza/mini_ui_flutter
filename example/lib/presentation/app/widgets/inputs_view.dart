@@ -67,6 +67,8 @@ class InputsView extends StatelessWidget {
           type: MinInputType.multiline,
           minLines: 3,
           maxLines: 5,
+          maxLength: 150,
+          showCounter: true,
         ),
       ],
     );

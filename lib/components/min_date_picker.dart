@@ -320,22 +320,30 @@ class _MinDatePickerPanelState extends State<_MinDatePickerPanel> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: widget.onToday,
-                child: Text(
-                  'Hoy',
-                  style: theme.typography.body.copyWith(
-                    color: theme.colors.primary,
+              Semantics(
+                button: true,
+                label: 'Ir a la fecha de hoy',
+                child: GestureDetector(
+                  onTap: widget.onToday,
+                  child: Text(
+                    'Hoy',
+                    style: theme.typography.body.copyWith(
+                      color: theme.colors.primary,
+                    ),
                   ),
                 ),
               ),
               SizedBox(width: theme.spacing.s4),
-              GestureDetector(
-                onTap: () => setState(() => _showMonthSelector = true),
-                child: Text(
-                  'Meses',
-                  style: theme.typography.body.copyWith(
-                    color: theme.colors.primary,
+              Semantics(
+                button: true,
+                label: 'Seleccionar mes',
+                child: GestureDetector(
+                  onTap: () => setState(() => _showMonthSelector = true),
+                  child: Text(
+                    'Meses',
+                    style: theme.typography.body.copyWith(
+                      color: theme.colors.primary,
+                    ),
                   ),
                 ),
               ),
@@ -443,24 +451,29 @@ class _MinMonthSelector extends StatelessWidget {
       children: List.generate(12, (i) {
         final month = i + 1;
         final isSelected = month == selectedMonth;
-        return GestureDetector(
-          onTap: () => onSelectMonth(month),
-          child: AnimatedContainer(
-            duration: theme.motion.fast,
-            curve: theme.motion.curve,
-            width: (theme.spacing.s12 * 6 - theme.spacing.s1 * 11) / 6,
-            height: theme.spacing.s6,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isSelected ? theme.colors.primary : theme.colors.card,
-              borderRadius: BorderRadius.circular(theme.radius.sm),
-            ),
-            child: Text(
-              months[i],
-              style: theme.typography.small.copyWith(
-                color: isSelected
-                    ? theme.colors.primaryForeground
-                    : theme.colors.cardForeground,
+        return Semantics(
+          label: _monthNameEs(month),
+          button: true,
+          selected: isSelected,
+          child: GestureDetector(
+            onTap: () => onSelectMonth(month),
+            child: AnimatedContainer(
+              duration: theme.motion.fast,
+              curve: theme.motion.curve,
+              width: (theme.spacing.s12 * 6 - theme.spacing.s1 * 11) / 6,
+              height: theme.spacing.s6,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: isSelected ? theme.colors.primary : theme.colors.card,
+                borderRadius: BorderRadius.circular(theme.radius.sm),
+              ),
+              child: Text(
+                months[i],
+                style: theme.typography.small.copyWith(
+                  color: isSelected
+                      ? theme.colors.primaryForeground
+                      : theme.colors.cardForeground,
+                ),
               ),
             ),
           ),
@@ -658,24 +671,29 @@ class _YearItemState extends State<_YearItem> {
         ? theme.colors.accent
         : theme.colors.card;
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: theme.motion.fast,
-          curve: theme.motion.curve,
-          height: widget.itemHeight,
-          padding: EdgeInsets.symmetric(horizontal: theme.spacing.s3),
-          color: bg,
-          alignment: Alignment.centerLeft,
-          child: Text(
-            '${widget.year}',
-            style: theme.typography.body.copyWith(
-              color: theme.colors.cardForeground,
+    return Semantics(
+      label: '${widget.year}',
+      button: true,
+      selected: widget.selected,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: widget.onTap,
+          child: AnimatedContainer(
+            duration: theme.motion.fast,
+            curve: theme.motion.curve,
+            height: widget.itemHeight,
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.s3),
+            color: bg,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '${widget.year}',
+              style: theme.typography.body.copyWith(
+                color: theme.colors.cardForeground,
+              ),
             ),
           ),
         ),
@@ -705,6 +723,7 @@ class _MinDatePickerTrigger extends StatefulWidget {
 
 class _MinDatePickerTriggerState extends State<_MinDatePickerTrigger> {
   bool _hovered = false;
+  bool _focused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -716,47 +735,50 @@ class _MinDatePickerTriggerState extends State<_MinDatePickerTrigger> {
       button: true,
       enabled: !widget.disabled,
       label: widget.semanticLabel,
-      child: MouseRegion(
-        cursor: widget.disabled
-            ? SystemMouseCursors.basic
-            : SystemMouseCursors.click,
-        onEnter: (_) => setState(() => _hovered = true),
-        onExit: (_) => setState(() => _hovered = false),
-        child: AnimatedContainer(
-          duration: theme.motion.normal,
-          curve: theme.motion.curve,
-          height: theme.spacing.s10,
-          padding: EdgeInsets.symmetric(horizontal: theme.spacing.s4),
-          decoration: BoxDecoration(
-            color: widget.disabled ? theme.colors.muted : bg,
-            borderRadius: BorderRadius.circular(theme.radius.md),
-            border: Border.all(
-              color: theme.colors.border,
-              width: theme.spacing.px,
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label.isEmpty ? widget.placeholder : label,
-                style: widget.style.copyWith(
-                  color: widget.disabled
-                      ? theme.colors.mutedForeground
-                      : theme.colors.foreground,
-                ),
+      child: Focus(
+        onFocusChange: (value) => setState(() => _focused = value),
+        child: MouseRegion(
+          cursor: widget.disabled
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
+          onEnter: (_) => setState(() => _hovered = true),
+          onExit: (_) => setState(() => _hovered = false),
+          child: AnimatedContainer(
+            duration: theme.motion.normal,
+            curve: theme.motion.curve,
+            height: theme.spacing.s10,
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.s4),
+            decoration: BoxDecoration(
+              color: widget.disabled ? theme.colors.muted : bg,
+              borderRadius: BorderRadius.circular(theme.radius.md),
+              border: Border.all(
+                color: _focused ? theme.colors.ring : theme.colors.border,
+                width: _focused ? 2 : theme.spacing.px,
               ),
-              SizedBox(width: theme.spacing.s2),
-              SizedBox(
-                width: theme.spacing.s4,
-                height: theme.spacing.s4,
-                child: CustomPaint(
-                  painter: _CalendarPainter(
-                    color: theme.colors.mutedForeground,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label.isEmpty ? widget.placeholder : label,
+                  style: widget.style.copyWith(
+                    color: widget.disabled
+                        ? theme.colors.mutedForeground
+                        : theme.colors.foreground,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(width: theme.spacing.s2),
+                SizedBox(
+                  width: theme.spacing.s4,
+                  height: theme.spacing.s4,
+                  child: CustomPaint(
+                    painter: _CalendarPainter(
+                      color: theme.colors.mutedForeground,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -834,28 +856,34 @@ class _DayCellState extends State<_DayCell> {
       border = isToday ? theme.colors.border : theme.colors.card;
     }
 
-    return MouseRegion(
-      cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: enabled ? () => widget.onTap(widget.date) : null,
-        child: Container(
-          width: (theme.spacing.s12 * 6) / 7,
-          height: theme.spacing.s10 - theme.spacing.s2,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(theme.radius.sm),
-            border: Border.all(
-              color: border,
-              width: isReference || isToday ? theme.spacing.px : 0,
+    return Semantics(
+      label: '${widget.date.day} de ${_monthNameEs(widget.date.month)}',
+      button: enabled,
+      selected: isSelected,
+      enabled: enabled,
+      child: MouseRegion(
+        cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: enabled ? () => widget.onTap(widget.date) : null,
+          child: Container(
+            width: (theme.spacing.s12 * 6) / 7,
+            height: theme.spacing.s10 - theme.spacing.s2,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(theme.radius.sm),
+              border: Border.all(
+                color: border,
+                width: isReference || isToday ? theme.spacing.px : 0,
+              ),
             ),
-          ),
-          child: Text(
-            '${widget.date.day}',
-            style: theme.typography.small.copyWith(color: fg),
+            child: Text(
+              '${widget.date.day}',
+              style: theme.typography.small.copyWith(color: fg),
+            ),
           ),
         ),
       ),
@@ -890,30 +918,36 @@ class _MinHeaderIconButtonState extends State<_MinHeaderIconButton> {
         ? theme.colors.accent
         : theme.colors.card;
 
-    return MouseRegion(
-      cursor: widget.enabled
-          ? SystemMouseCursors.click
-          : SystemMouseCursors.basic,
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.enabled ? widget.onTap : null,
-        child: MinCard(
-          width: theme.spacing.s10 - theme.spacing.s1,
-          height: theme.spacing.s10 - theme.spacing.s1,
-          backgroundColor: bg,
-          padding: EdgeInsets.zero,
-          child: Center(
-            child: SizedBox(
-              width: theme.spacing.s4,
-              height: theme.spacing.s4,
-              child: CustomPaint(
-                painter: _ChevronPainter(
-                  color: widget.enabled
-                      ? theme.colors.cardForeground
-                      : theme.colors.mutedForeground,
-                  direction: widget.direction,
+    return Semantics(
+      button: widget.enabled,
+      label: widget.direction == _ChevronDirection.left
+          ? 'Mes anterior'
+          : 'Mes siguiente',
+      child: MouseRegion(
+        cursor: widget.enabled
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: widget.enabled ? widget.onTap : null,
+          child: MinCard(
+            width: theme.spacing.s10 - theme.spacing.s1,
+            height: theme.spacing.s10 - theme.spacing.s1,
+            backgroundColor: bg,
+            padding: EdgeInsets.zero,
+            child: Center(
+              child: SizedBox(
+                width: theme.spacing.s4,
+                height: theme.spacing.s4,
+                child: CustomPaint(
+                  painter: _ChevronPainter(
+                    color: widget.enabled
+                        ? theme.colors.cardForeground
+                        : theme.colors.mutedForeground,
+                    direction: widget.direction,
+                  ),
                 ),
               ),
             ),

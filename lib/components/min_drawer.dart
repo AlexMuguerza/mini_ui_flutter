@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../theme/tokens.dart';
@@ -108,6 +109,9 @@ class MinDrawer extends StatefulWidget {
     this.overlayColor = const Color(0x52000000),
     this.drawerBackgroundColor,
     this.endDrawerBackgroundColor,
+    this.drawerLabel,
+    this.endDrawerLabel,
+    this.enableEscape = true,
     this.duration = const Duration(milliseconds: 180),
     this.curve = Curves.easeOut,
   });
@@ -125,6 +129,9 @@ class MinDrawer extends StatefulWidget {
   final Color overlayColor;
   final Color? drawerBackgroundColor;
   final Color? endDrawerBackgroundColor;
+  final String? drawerLabel;
+  final String? endDrawerLabel;
+  final bool enableEscape;
   final Duration duration;
   final Curve curve;
 
@@ -149,6 +156,9 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
     duration: widget.duration,
     value: 0,
   );
+
+  final FocusNode _drawerFocusNode = FocusNode();
+  final FocusNode _endDrawerFocusNode = FocusNode();
 
   _DragMode? _dragMode;
 
@@ -182,6 +192,8 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
     _controller.removeListener(_syncFromController);
     _drawerCtrl.dispose();
     _endDrawerCtrl.dispose();
+    _drawerFocusNode.dispose();
+    _endDrawerFocusNode.dispose();
     _ownedController.dispose();
     super.dispose();
   }
@@ -192,12 +204,18 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
     if (_controller.isDrawerOpen) {
       _endDrawerCtrl.animateTo(0, curve: widget.curve);
       _drawerCtrl.animateTo(1, curve: widget.curve);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _drawerFocusNode.requestFocus();
+      });
       return;
     }
 
     if (_controller.isEndDrawerOpen) {
       _drawerCtrl.animateTo(0, curve: widget.curve);
       _endDrawerCtrl.animateTo(1, curve: widget.curve);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _endDrawerFocusNode.requestFocus();
+      });
       return;
     }
 
@@ -366,10 +384,14 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
                       ignoring: overlayOpacity == 0,
                       child: Opacity(
                         opacity: overlayOpacity,
-                        child: GestureDetector(
-                          onTap: _controller.closeAll,
-                          behavior: HitTestBehavior.opaque,
-                          child: ColoredBox(color: widget.overlayColor),
+                        child: Semantics(
+                          label: 'Cerrar menú',
+                          button: true,
+                          child: GestureDetector(
+                            onTap: _controller.closeAll,
+                            behavior: HitTestBehavior.opaque,
+                            child: ColoredBox(color: widget.overlayColor),
+                          ),
                         ),
                       ),
                     ),
@@ -380,9 +402,24 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
                       bottom: 0,
                       left: drawerOffset,
                       width: widget.drawerWidth,
-                      child: ColoredBox(
-                        color: effectiveDrawerBg,
-                        child: widget.drawer,
+                      child: Semantics(
+                        label: widget.drawerLabel,
+                        explicitChildNodes: true,
+                        child: Focus(
+                          focusNode: _drawerFocusNode,
+                          child: CallbackShortcuts(
+                            bindings: {
+                              if (widget.enableEscape)
+                                const SingleActivator(
+                                  LogicalKeyboardKey.escape,
+                                ): _controller.closeDrawer,
+                            },
+                            child: ColoredBox(
+                              color: effectiveDrawerBg,
+                              child: widget.drawer,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   if (widget.endDrawer != null)
@@ -391,9 +428,24 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
                       bottom: 0,
                       right: endDrawerOffset,
                       width: widget.endDrawerWidth,
-                      child: ColoredBox(
-                        color: effectiveEndDrawerBg,
-                        child: widget.endDrawer,
+                      child: Semantics(
+                        label: widget.endDrawerLabel,
+                        explicitChildNodes: true,
+                        child: Focus(
+                          focusNode: _endDrawerFocusNode,
+                          child: CallbackShortcuts(
+                            bindings: {
+                              if (widget.enableEscape)
+                                const SingleActivator(
+                                  LogicalKeyboardKey.escape,
+                                ): _controller.closeEndDrawer,
+                            },
+                            child: ColoredBox(
+                              color: effectiveEndDrawerBg,
+                              child: widget.endDrawer,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                 ],

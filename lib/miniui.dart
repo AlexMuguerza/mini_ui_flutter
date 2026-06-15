@@ -19,6 +19,9 @@ export './theme/tokens.dart'
 export './components/min_button.dart'
     show MinButton, MinButtonSize, MinButtonVariant;
 
+export './components/min_button_group.dart'
+    show MinButtonGroup, MinButtonGroupOption;
+
 export './components/min_card.dart' show MinCard;
 
 export './components/min_select.dart'

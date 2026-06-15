@@ -12,6 +12,7 @@ import 'widgets/date_picker_view.dart';
 import 'widgets/inputs_view.dart';
 import 'widgets/select_view.dart';
 import 'widgets/switches_view.dart';
+import 'widgets/button_group_view.dart';
 
 class AppView extends StatelessWidget {
   AppView({super.key});
@@ -61,6 +62,7 @@ class AppView extends StatelessWidget {
     if (section == AppSection.checkboxes) return const CheckboxesView();
     if (section == AppSection.appBar) return const AppBarView();
     if (section == AppSection.datePicker) return const DatePickerView();
+    if (section == AppSection.buttonGroup) return const ButtonGroupView();
     return const SelectView();
   }
 }

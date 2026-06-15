@@ -61,6 +61,7 @@ class MinButton extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     this.semanticLabel,
+    this.borderRadius,
   });
 
   final Widget child;
@@ -74,6 +75,10 @@ class MinButton extends StatefulWidget {
   final FocusNode? focusNode;
   final bool autofocus;
   final String? semanticLabel;
+
+  /// Border radius personalizado. Sobreescribe el valor por defecto
+  /// del tema según el [size].
+  final BorderRadius? borderRadius;
 
   @override
   State<MinButton> createState() => _MinButtonState();
@@ -166,7 +171,8 @@ class _MinButtonState extends State<MinButton> {
               ),
               decoration: BoxDecoration(
                 color: style.background,
-                borderRadius: BorderRadius.circular(style.radius),
+                borderRadius: widget.borderRadius ??
+                    BorderRadius.circular(style.radius),
                 border: Border.all(
                   color: style.border,
                   width: theme.spacing.px,
