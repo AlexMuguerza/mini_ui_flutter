@@ -50,3 +50,7 @@ export 'resources/min_floating/min_portal.dart' show MinPortal;
 export './components/min_scaffold.dart' show MinScaffold;
 
 export './components/min_drawer.dart' show MinDrawer, MinDrawerController;
+
+export './locals/min_locale.dart' show MinLocale;
+export './locals/min_localizations.dart'
+    show MinLocalizations, MinLocaleContext;

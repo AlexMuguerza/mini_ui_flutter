@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../locals/min_localizations.dart';
 import '../theme/tokens.dart';
 import 'min_card.dart';
 import 'min_popover.dart';
@@ -219,7 +220,7 @@ class _MinDatePickerState extends State<MinDatePicker> {
       },
       child: _MinDatePickerTrigger(
         selected: selected,
-        placeholder: widget.placeholder ?? 'Seleccionar fecha',
+        placeholder: widget.placeholder ?? context.minLocale.datePickerPlaceholder,
         disabled: widget.disabled,
         semanticLabel: widget.semanticLabel,
         style: theme.typography.body,
@@ -298,7 +299,7 @@ class _MinDatePickerPanelState extends State<_MinDatePickerPanel> {
                 Expanded(
                   child: _MinYearPopoverButton(
                     groupId: widget.groupId,
-                    monthName: _monthNameEs(widget.displayMonth.month),
+                    monthName: context.minLocale.monthNames[widget.displayMonth.month - 1],
                     year: widget.displayMonth.year,
                     minYear: widget.minDate.year,
                     maxYear: widget.maxDate.year,
@@ -322,11 +323,11 @@ class _MinDatePickerPanelState extends State<_MinDatePickerPanel> {
             children: [
               Semantics(
                 button: true,
-                label: 'Ir a la fecha de hoy',
+                label: context.minLocale.today,
                 child: GestureDetector(
                   onTap: widget.onToday,
                   child: Text(
-                    'Hoy',
+                    context.minLocale.today,
                     style: theme.typography.body.copyWith(
                       color: theme.colors.primary,
                     ),
@@ -336,11 +337,11 @@ class _MinDatePickerPanelState extends State<_MinDatePickerPanel> {
               SizedBox(width: theme.spacing.s4),
               Semantics(
                 button: true,
-                label: 'Seleccionar mes',
+                label: context.minLocale.months,
                 child: GestureDetector(
                   onTap: () => setState(() => _showMonthSelector = true),
                   child: Text(
-                    'Meses',
+                    context.minLocale.months,
                     style: theme.typography.body.copyWith(
                       color: theme.colors.primary,
                     ),
@@ -371,7 +372,7 @@ class _MinDatePickerPanelState extends State<_MinDatePickerPanel> {
     final trailingBlanks = (7 - (totalCells % 7)) % 7;
     final gridStart = firstOfMonth.subtract(Duration(days: leadingBlanks));
 
-    final dayHeaders = const ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    final dayHeaders = context.minLocale.dayHeaders;
 
     return Column(
       children: [
@@ -430,20 +431,8 @@ class _MinMonthSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    const months = [
-      'Ene',
-      'Feb',
-      'Mar',
-      'Abr',
-      'May',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dic',
-    ];
+    final locale = context.minLocale;
+    final months = locale.monthNamesShort;
 
     return Wrap(
       spacing: theme.spacing.s1,
@@ -452,7 +441,7 @@ class _MinMonthSelector extends StatelessWidget {
         final month = i + 1;
         final isSelected = month == selectedMonth;
         return Semantics(
-          label: _monthNameEs(month),
+          label: locale.monthNames[month - 1],
           button: true,
           selected: isSelected,
           child: GestureDetector(
@@ -857,7 +846,7 @@ class _DayCellState extends State<_DayCell> {
     }
 
     return Semantics(
-      label: '${widget.date.day} de ${_monthNameEs(widget.date.month)}',
+      label: '${context.minLocale.monthNames[widget.date.month - 1]} ${widget.date.day}',
       button: enabled,
       selected: isSelected,
       enabled: enabled,
@@ -921,8 +910,8 @@ class _MinHeaderIconButtonState extends State<_MinHeaderIconButton> {
     return Semantics(
       button: widget.enabled,
       label: widget.direction == _ChevronDirection.left
-          ? 'Mes anterior'
-          : 'Mes siguiente',
+          ? context.minLocale.prevMonth
+          : context.minLocale.nextMonth,
       child: MouseRegion(
         cursor: widget.enabled
             ? SystemMouseCursors.click
@@ -1070,22 +1059,4 @@ String _formatDate(DateTime date) {
   return '$d/$m/$y';
 }
 
-String _monthNameEs(int month) {
-  const months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
 
-  final index = month.clamp(1, 12) - 1;
-  return months[index];
-}

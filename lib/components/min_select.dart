@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../locals/min_localizations.dart';
 import '../resources/min_floating/min_anchor.dart';
 import '../resources/min_floating/min_floating_base.dart';
 import '../resources/min_floating/min_floating_controller.dart';
@@ -293,7 +294,7 @@ class _MinSelectState<T> extends State<MinSelect<T>> {
       focused: _focused,
     );
     final selected = _selectedOption;
-    final placeholder = widget.placeholder ?? 'Select...';
+    final placeholder = widget.placeholder ?? context.minLocale.selectPlaceholder;
 
     final trigger = Semantics(
       button: true,
@@ -466,7 +467,7 @@ class _MinSelectFloating<T> extends MinFloatingBase {
             MinInput(
               controller: searchController,
               focusNode: searchFocusNode,
-              placeholder: searchPlaceholder ?? 'Buscar...',
+              placeholder: searchPlaceholder ?? context.minLocale.selectSearchPlaceholder,
               leading: Icon(
                 // Using a simple text icon to avoid importing tabler_icons
                 // in the package. The consumer can override with a custom icon.

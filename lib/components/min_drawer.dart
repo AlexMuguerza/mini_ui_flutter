@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../locals/min_localizations.dart';
 import '../theme/tokens.dart';
 
 /// Controlador de visibilidad de los paneles de [MinDrawer].
@@ -385,7 +386,7 @@ class _MinDrawerState extends State<MinDrawer> with TickerProviderStateMixin {
                       child: Opacity(
                         opacity: overlayOpacity,
                         child: Semantics(
-                          label: 'Cerrar menú',
+                          label: context.minLocale.closeDrawerLabel,
                           button: true,
                           child: GestureDetector(
                             onTap: _controller.closeAll,
