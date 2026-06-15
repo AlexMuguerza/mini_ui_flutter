@@ -1,22 +1,38 @@
-# miniui
+# mini_ui_flutter
 
 Un paquete de componentes UI para Flutter con sistema de temas basado en [shadcn/ui](https://ui.shadcn.com/).
 
+[![pub package](https://img.shields.io/pub/v/mini_ui_flutter.svg)](https://pub.dev/packages/mini_ui_flutter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Instalación
+## Instalación via pub.dev
 
 ```yaml
 dependencies:
-  miniui:
+  mini_ui_flutter: ^1.0.0
+```
+
+```bash
+flutter pub get
+```
+
+## Instalación via github
+
+```yaml
+dependencies:
+  mini_ui_flutter: 
     git:
       url: https://github.com/AlexMuguerza/mini_ui_flutter.git
+```
+
+```bash
+flutter pub get
 ```
 
 ## Uso rápido
 
 ```dart
-import 'package:miniui/miniui.dart';
+import 'package:mini_ui_flutter/miniui.dart';
 
 // Envolver la app con MinTheme
 MinTheme(
@@ -34,17 +50,27 @@ Text('Hola', style: TextStyle(color: colors.cardForeground))
 
 | Componente | Descripción |
 |---|---|
-| `MinButton` | Botón con variantes (primary, secondary, outline, ghost), tamaños, loading, disabled |
-| `MinCard` | Tarjeta con fondo, borde y sombra del tema |
+| `MinButton` | Botón con variantes (primary, secondary, outline, ghost), tamaños, loading, disabled, borderRadius |
+| `MinButtonGroup<T>` | Grupo de botones con selección completa, navegable por teclado (flechas/enter/espacio) |
+| `MinCard` | Tarjeta con fondo, borde, sombra y padding del tema |
 | `MinSelect<T>` | Selección tipada con searchable, secciones, leading/trailing |
 | `MinDatePicker` | Selector de fecha con calendario mensual y selector de meses |
-| `MinInput` | Campo de texto con tipos semánticos, variantes, leading/trailing |
-| `MinSwitch` | Interruptor toggle con tamaños y loading state |
-| `MinCheckbox` | Checkbox con tamaños e icono personalizable |
+| `MinInput` | Campo de texto con tipos semánticos, variantes, leading/trailing, showCounter |
+| `MinSwitch` | Interruptor toggle con tamaños, semanticLabel |
+| `MinCheckbox` | Checkbox con tamaños, icono personalizable, semanticLabel |
 | `MinAppBar` | Barra de aplicación con leading, title, trailing |
-| `MinScaffold` | Andamiaje de página con appBar, FAB, drawers |
-| `MinDrawer` | Drawer start/end con gestos, overlay, modo persistent |
+| `MinScaffold` | Andamiaje de página con appBar, FAB, drawers, resizeToAvoidBottomInset |
+| `MinDrawer` | Drawer start/end con gestos, overlay, modo persistente, Escape para cerrar |
 | `MinPopover` | Contenedor flotante anclado con contenido custom |
+
+## Accesibilidad
+
+Todos los componentes interactivos incluyen:
+
+- **Semantics**: Labels descriptivos para lectores de pantalla
+- **Focus**: Navegación completa por teclado (Tab, Enter, Espacio, Flechas)
+- **MouseRegion**: Cursor interactivo en web/desktop
+- **Keyboard shortcuts**: Enter/Espacio para activar, Escape para cerrar, Flechas para navegar
 
 ## Tema
 
@@ -87,6 +113,7 @@ lib/
 │   └── theme.dart               # MinTheme, MinThemeData
 ├── components/                  # Widgets UI
 │   ├── min_button.dart
+│   ├── min_button_group.dart
 │   ├── min_card.dart
 │   ├── min_select.dart
 │   ├── min_date_picker.dart
@@ -105,15 +132,8 @@ lib/
 ```bash
 flutter pub get              # Instalar dependencias
 flutter analyze              # Lint + análisis estático
-flutter test                 # Ejecutar tests (95 tests)
+flutter test                 # Ejecutar tests (109 tests)
 cd example && flutter run    # Ejecutar app de demo
-```
-
-## Tests
-
-```bash
-flutter test                 # Todos los tests
-flutter test test/min_select_test.dart  # Tests de un componente
 ```
 
 ## Licencia

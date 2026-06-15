@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:miniui/miniui.dart';
+import 'package:mini_ui_flutter/miniui.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle(this.text, {super.key});

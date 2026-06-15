@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miniui/miniui.dart';
+import 'package:mini_ui_flutter/miniui.dart';
 
 import 'presentation/app/app_cubit.dart';
 import 'presentation/app/app_view.dart';
