@@ -3,9 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_ui_flutter/miniui.dart';
 
 Widget wrapInApp(Widget child) {
-  return MinTheme(
-    data: MinThemeData.light(),
-    child: MaterialApp(home: Scaffold(body: child)),
+  return MinLocalizations(
+    locale: const Locale('en'),
+    child: MinTheme(
+      data: MinThemeData.light(),
+      child: MaterialApp(home: Scaffold(body: child)),
+    ),
   );
 }
 

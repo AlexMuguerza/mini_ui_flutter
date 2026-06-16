@@ -27,13 +27,16 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             builder: (context, child) {
-              return MinTheme(
-                data: state.theme,
-                child: DefaultTextStyle(
-                  style: state.theme.typography.body.copyWith(
-                    color: state.theme.colors.foreground,
+              return MinLocalizations(
+                locale: const Locale('es'),
+                child: MinTheme(
+                  data: state.theme,
+                  child: DefaultTextStyle(
+                    style: state.theme.typography.body.copyWith(
+                      color: state.theme.colors.foreground,
+                    ),
+                    child: child ?? const SizedBox.shrink(),
                   ),
-                  child: child ?? const SizedBox.shrink(),
                 ),
               );
             },

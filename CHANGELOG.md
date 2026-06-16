@@ -22,8 +22,17 @@ Initial release.
 - `MinDrawer` — start/end drawers with gestures, overlay, persistent mode, Escape to close, drawerLabel/endDrawerLabel
 - `MinPopover` — floating anchored container with close on tap outside, Escape, scroll
 
+### Localization
+- `MinLocalizations` InheritedWidget with `MinLocale`
+- Built-in `MinLocale.es` (Spanish) and `MinLocale.en` (English)
+- `context.minLocale` extension for easy access
+- Partial overrides via `overrides:` parameter
+- All user-facing strings in `MinDatePicker`, `MinSelect`, and `MinDrawer` use locale
+
 ### Accessibility
 - Semantics on all interactive components
 - Full keyboard navigation (Tab, Enter, Space, Escape, Arrow keys)
 - MouseRegion with cursor changes on web/desktop
 - Focus management with visible focus rings
+- `semanticLabel` parameters on `MinButton`, `MinSwitch`, `MinCheckbox`, `MinInput`
+- `drawerLabel`/`endDrawerLabel` on `MinDrawer`

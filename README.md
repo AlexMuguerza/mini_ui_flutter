@@ -46,6 +46,38 @@ Container(color: colors.card)
 Text('Hola', style: TextStyle(color: colors.cardForeground))
 ```
 
+## Localización
+
+```dart
+import 'package:mini_ui_flutter/miniui.dart';
+
+// Envolver la app con MinLocalizations
+MinLocalizations(
+  locale: const Locale('es'), // o Locale('en')
+  child: MinTheme(
+    data: MinThemeData.light(),
+    child: MyApp(),
+  ),
+)
+
+// Usar en componentes
+final locale = context.minLocale;
+locale.selectPlaceholder;       // "Seleccionar..." (es) / "Select..." (en)
+locale.datePlaceholder;         // "Seleccionar fecha" (es) / "Select date" (en)
+locale.closeDrawerLabel;        // "Cerrar menú" (es) / "Close menu" (en)
+locale.months;                  // ["Enero", ...] / ["January", ...]
+locale.dayHeaders;              // ["L", "M", ...] / ["M", "T", ...]
+
+// Sobrescribir strings parcialmente
+MinLocalizations(
+  locale: const Locale('es'),
+  overrides: MinLocale.es.copyWith(
+    selectPlaceholder: 'Elige una opción',
+  ),
+  child: MyApp(),
+)
+```
+
 ## Componentes
 
 | Componente | Descripción |
@@ -103,6 +135,9 @@ final radius = theme.radius;
 ```
 lib/
 ├── miniui.dart                  # Barrel export
+├── locals/                      # Localización
+│   ├── min_locale.dart          # MinLocale con strings es/en
+│   └── min_localizations.dart   # MinLocalizations InheritedWidget
 ├── theme/                       # Sistema de temas
 │   ├── colors.dart              # Paletas zinc/zincDark/slate/slateDark
 │   ├── typography.dart          # Escala tipográfica
