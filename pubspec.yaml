@@ -3,7 +3,7 @@ description: >-
   UI component library for Flutter inspired by shadcn/ui. 12+ accessible
   components with full theme system. Copy/paste philosophy with upcoming
   CLI to add only what you need.
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/AlexMuguerza/mini_ui_flutter
 repository: https://github.com/AlexMuguerza/mini_ui_flutter
 issue_tracker: https://github.com/AlexMuguerza/mini_ui_flutter/issues

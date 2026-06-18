@@ -5,11 +5,14 @@ Un paquete de componentes UI para Flutter con sistema de temas basado en [shadcn
 [![pub package](https://img.shields.io/pub/v/mini_ui_flutter.svg)](https://pub.dev/packages/mini_ui_flutter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Demo 
+[![demo](https://img.shields.io/badge/demo-online-blue)](https://alexmuguerza.github.io/mini_ui_flutter)
+
 ## Instalación via pub.dev
 
 ```yaml
 dependencies:
-  mini_ui_flutter: ^1.0.0
+  mini_ui_flutter: ^1.1.0
 ```
 
 ```bash
@@ -94,6 +97,8 @@ MinLocalizations(
 | `MinScaffold` | Andamiaje de página con appBar, FAB, drawers, resizeToAvoidBottomInset |
 | `MinDrawer` | Drawer start/end con gestos, overlay, modo persistente, Escape para cerrar |
 | `MinPopover` | Contenedor flotante anclado con contenido custom |
+| `MinProgress` | Indicador de progreso linear y circular, determinable e indeterminable |
+| `MinTooltip` | Tooltip flotante con hover, delay configurable, posicionamiento automático |
 
 ## Accesibilidad
 
@@ -167,7 +172,7 @@ lib/
 ```bash
 flutter pub get              # Instalar dependencias
 flutter analyze              # Lint + análisis estático
-flutter test                 # Ejecutar tests (109 tests)
+flutter test                 # Ejecutar tests (122 tests)
 cd example && flutter run    # Ejecutar app de demo
 ```
 

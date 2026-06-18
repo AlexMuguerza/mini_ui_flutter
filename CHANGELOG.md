@@ -1,3 +1,31 @@
+## 1.1.0
+
+### Components
+- `MinButton` — altura fija cambiada a altura mínima (`BoxConstraints(minHeight:)`) para soportar contenido multilínea
+- `MinProgress` — indicador de progreso con variantes `linear` y `circular`, ambos soportan modo determinable (valor 0.0–1.0) e indeterminable (null), animaciones, colores personalizables
+- `MinTooltip` — tooltip flotante que aparece al hacer hover, usa sistema de floating (overlay + posicionamiento automático), delay configurable, hereda el tema
+
+### Fixes
+- `MinTooltip` — web hover no funcionaba por `AbsorbPointer` en el overlay barrier. Cambiado `closeOnTapOutside: false` para evitar que el barrier absorba el hit test y dispare `onExit` del `MouseRegion`
+- Dartdocs agregados a `MinProgressVariant`, `MinProgress` y `MinTooltip`
+
+### Example app
+- `theme_palettes.dart`: paletas personalizadas con `MinColors` (`SlatePalette` y `VioletPalette`)
+- `AppCubit` ahora maneja `ThemeVariant` enum con `setThemeVariant()`
+- `SettingsView`, `ProgressView`, `TooltipView` — nuevas vistas demo
+- Ancho máximo de la app limitado a 1024px centrado para web
+
+### CI/CD
+- `.github/workflows/deploy.yml` — build web del example + deploy a GitHub Pages
+
+### README
+- Badge de demo online agregado
+
+### Tests
+- `min_progress_test.dart` — 8 tests
+- `min_tooltip_test.dart` — 5 tests
+- Total: 122 tests (+13)
+
 ## 1.0.0
 
 Initial release.

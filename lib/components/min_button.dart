@@ -165,7 +165,7 @@ class _MinButtonState extends State<MinButton> {
             child: AnimatedContainer(
               duration: theme.motion.normal,
               curve: theme.motion.curve,
-              height: style.height,
+              constraints: BoxConstraints(minHeight: style.height),
               padding: EdgeInsets.symmetric(
                 horizontal: style.horizontalPadding,
               ),

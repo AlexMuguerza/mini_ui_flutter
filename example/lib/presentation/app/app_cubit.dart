@@ -4,16 +4,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:mini_ui_flutter/miniui.dart';
 
+import 'theme_palettes.dart';
+
 enum MinThemeMode { light, dark }
 
+enum ThemeVariant { zinc, slate, custom }
+
 class AppState {
-  const AppState({required this.mode, required this.theme});
+  const AppState({
+    required this.mode,
+    required this.variant,
+    required this.theme,
+  });
 
   final MinThemeMode mode;
+  final ThemeVariant variant;
   final MinThemeData theme;
 
-  AppState copyWith({MinThemeMode? mode, MinThemeData? theme}) {
-    return AppState(mode: mode ?? this.mode, theme: theme ?? this.theme);
+  AppState copyWith({
+    MinThemeMode? mode,
+    ThemeVariant? variant,
+    MinThemeData? theme,
+  }) {
+    return AppState(
+      mode: mode ?? this.mode,
+      variant: variant ?? this.variant,
+      theme: theme ?? this.theme,
+    );
   }
 }
 
@@ -31,7 +48,16 @@ class AppSection {
   static const appBar = AppSection._('App Bar', TablerIcons.layout_navbar);
   static const datePicker = AppSection._('Date Picker', TablerIcons.calendar);
   static const select = AppSection._('Select', TablerIcons.list);
-  static const buttonGroup = AppSection._('Button Group', TablerIcons.layout_list);
+  static const buttonGroup = AppSection._(
+    'Button Group',
+    TablerIcons.layout_list,
+  );
+  static const progress = AppSection._(
+    'Progress Indicators',
+    TablerIcons.progress,
+  );
+  static const tooltip = AppSection._('Tooltip', TablerIcons.info_circle);
+  static const settings = AppSection._('Settings', TablerIcons.settings);
 
   static const values = [
     buttons,
@@ -43,49 +69,75 @@ class AppSection {
     datePicker,
     select,
     buttonGroup,
+    progress,
+    tooltip,
+    settings,
   ];
 }
 
 class AppCubit extends Cubit<AppState> {
   AppCubit()
-    : super(AppState(mode: MinThemeMode.light, theme: MinThemeData.light()));
+    : super(
+        AppState(
+          mode: MinThemeMode.light,
+          variant: ThemeVariant.zinc,
+          theme: _resolve(MinThemeMode.light, ThemeVariant.zinc),
+        ),
+      );
 
   void setThemeMode(MinThemeMode mode) {
-    emit(state.copyWith(mode: mode, theme: _resolveTheme(mode)));
+    emit(state.copyWith(mode: mode, theme: _resolve(mode, state.variant)));
   }
 
   void toggleTheme() {
     final next = state.mode == MinThemeMode.light
         ? MinThemeMode.dark
         : MinThemeMode.light;
-
     setThemeMode(next);
   }
 
-  MinThemeData _resolveTheme(MinThemeMode mode) {
-    switch (mode) {
-      case MinThemeMode.dark:
-        SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(
-            statusBarColor: Color(0x00000000),
-            statusBarIconBrightness: Brightness.light,
-            systemNavigationBarColor: Color(0x00000000),
-            systemNavigationBarDividerColor: Color(0x00000000),
-            systemNavigationBarIconBrightness: Brightness.light,
-          ),
-        );
-        return MinThemeData.dark();
-      case MinThemeMode.light:
-        SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(
-            statusBarColor: Color(0x00000000),
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarColor: Color(0x00000000),
-            systemNavigationBarDividerColor: Color(0x00000000),
-            systemNavigationBarIconBrightness: Brightness.dark,
-          ),
-        );
-        return MinThemeData.light();
+  void setThemeVariant(ThemeVariant variant) {
+    emit(
+      state.copyWith(variant: variant, theme: _resolve(state.mode, variant)),
+    );
+  }
+
+  static MinThemeData _resolve(MinThemeMode mode, ThemeVariant variant) {
+    final isDark = mode == MinThemeMode.dark;
+
+    if (isDark) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Color(0x00000000),
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: Color(0x00000000),
+          systemNavigationBarDividerColor: Color(0x00000000),
+          systemNavigationBarIconBrightness: Brightness.light,
+        ),
+      );
+    } else {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Color(0x00000000),
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarColor: Color(0x00000000),
+          systemNavigationBarDividerColor: Color(0x00000000),
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
+      );
+    }
+
+    switch (variant) {
+      case ThemeVariant.zinc:
+        return isDark ? MinThemeData.dark() : MinThemeData.light();
+      case ThemeVariant.slate:
+        return isDark
+            ? MinThemeData.dark(colors: SlatePalette.dark)
+            : MinThemeData.light(colors: SlatePalette.light);
+      case ThemeVariant.custom:
+        return isDark
+            ? MinThemeData.dark(colors: VioletPalette.dark)
+            : MinThemeData.light(colors: VioletPalette.light);
     }
   }
 }
@@ -140,7 +192,8 @@ class AppViewState {
       obscureTextValue: obscureTextValue ?? this.obscureTextValue,
       selectedSection: selectedSection ?? this.selectedSection,
       checkboxValue: checkboxValue ?? this.checkboxValue,
-      selectedButtonGroupIndex: selectedButtonGroupIndex ?? this.selectedButtonGroupIndex,
+      selectedButtonGroupIndex:
+          selectedButtonGroupIndex ?? this.selectedButtonGroupIndex,
     );
   }
 }
