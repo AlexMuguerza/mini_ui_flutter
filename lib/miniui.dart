@@ -58,6 +58,11 @@ export './components/min_progress.dart'
 
 export './components/min_tooltip.dart' show MinTooltip;
 
+export './components/min_toast/min_toast.dart' show MinToast;
+export './components/min_toast/min_toast_type.dart' show MinToastType;
+export './components/min_toast/min_toast_action.dart' show MinToastAction;
+export './components/min_toast/min_toast_position.dart' show MinToastPosition;
+
 export './locals/min_locale.dart' show MinLocale;
 export './locals/min_localizations.dart'
     show MinLocalizations, MinLocaleContext;

@@ -31,11 +31,17 @@ class MyApp extends StatelessWidget {
                 locale: const Locale('es'),
                 child: MinTheme(
                   data: state.theme,
-                  child: DefaultTextStyle(
-                    style: state.theme.typography.body.copyWith(
+                  child: IconTheme(
+                    data: IconThemeData(
                       color: state.theme.colors.foreground,
+                      size: 20,
                     ),
-                    child: child ?? const SizedBox.shrink(),
+                    child: DefaultTextStyle(
+                      style: state.theme.typography.body.copyWith(
+                        color: state.theme.colors.foreground,
+                      ),
+                      child: child ?? const SizedBox.shrink(),
+                    ),
                   ),
                 ),
               );

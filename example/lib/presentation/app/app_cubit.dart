@@ -57,6 +57,7 @@ class AppSection {
     TablerIcons.progress,
   );
   static const tooltip = AppSection._('Tooltip', TablerIcons.info_circle);
+  static const toast = AppSection._('Toast', TablerIcons.bell);
   static const settings = AppSection._('Settings', TablerIcons.settings);
 
   static const values = [
@@ -71,6 +72,7 @@ class AppSection {
     buttonGroup,
     progress,
     tooltip,
+    toast,
     settings,
   ];
 }

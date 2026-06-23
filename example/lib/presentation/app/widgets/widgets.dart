@@ -11,3 +11,4 @@ export './switches_view.dart';
 export './button_group_view.dart';
 export './progress_view.dart';
 export './tooltip_view.dart';
+export './toast_view.dart';

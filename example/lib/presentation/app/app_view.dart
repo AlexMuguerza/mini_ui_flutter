@@ -62,6 +62,7 @@ class AppView extends StatelessWidget {
     if (section == AppSection.buttonGroup) return const ButtonGroupView();
     if (section == AppSection.progress) return const ProgressView();
     if (section == AppSection.tooltip) return const TooltipView();
+    if (section == AppSection.toast) return const ToastView();
     if (section == AppSection.settings) return const SettingsView();
     return const SelectView();
   }
