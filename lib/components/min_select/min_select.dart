@@ -1,23 +1,24 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import '../locals/min_localizations.dart';
-import '../resources/min_floating/min_anchor.dart';
-import '../resources/min_floating/min_floating_base.dart';
-import '../resources/min_floating/min_floating_controller.dart';
-import '../theme/tokens.dart';
-import 'min_card.dart';
-import 'min_input.dart';
+import '../../locals/min_localizations.dart';
+import '../../resources/min_floating/min_anchor.dart';
+import '../../resources/min_floating/min_floating_base.dart';
+import '../../resources/min_floating/min_floating_controller.dart';
+import '../../theme/tokens.dart';
+import '../min_card.dart';
+import '../min_input/min_input.dart';
+
+part 'min_select_floating.dart';
+part 'min_option_tile.dart';
+part 'min_select_chevron.dart';
 
 enum MinSelectSize { sm, md, lg }
 
-/// Mark an item in [MinSelect.options] as either a concrete [MinSelectOption]
-/// or a section header [MinSelectSection].
 sealed class MinSelectItem<T> {
   const MinSelectItem();
 }
 
-/// A concrete option inside a [MinSelect] dropdown.
 class MinSelectOption<T> extends MinSelectItem<T> {
   const MinSelectOption({
     required this.value,
@@ -34,9 +35,6 @@ class MinSelectOption<T> extends MinSelectItem<T> {
   final Widget? trailing;
 }
 
-/// A non-selectable section header rendered inside the dropdown.
-///
-/// When the dropdown is searchable, sections are hidden while the user types.
 class MinSelectSection<T> extends MinSelectItem<T> {
   const MinSelectSection({required this.label});
 
@@ -76,9 +74,6 @@ class MinSelect<T> extends StatefulWidget {
   final double? maxMenuHeight;
   final double? menuWidth;
   final Widget? icon;
-
-  /// When `true`, the dropdown shows a search input that filters options
-  /// by their [MinSelectOption.label].
   final bool searchable;
   final String? searchPlaceholder;
 
@@ -403,255 +398,6 @@ class _MinSelectState<T> extends State<MinSelect<T>> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Floating panel
-// ---------------------------------------------------------------------------
-
-class _MinSelectFloating<T> extends MinFloatingBase {
-  const _MinSelectFloating({
-    required super.child,
-    required super.controller,
-    required this.items,
-    required this.filteredItems,
-    required this.selectedValue,
-    required this.activeIndex,
-    required this.onActiveIndexChanged,
-    required this.onSelected,
-    required this.searchable,
-    required this.searchController,
-    required this.searchFocusNode,
-    required MinUiAnchorSide side,
-    this.width,
-    this.maxHeight,
-    this.searchPlaceholder,
-  }) : super(
-         side: side,
-         openOnTap: false,
-         closeOnTapOutside: true,
-         closeOnEscape: true,
-         animation: MinFloatingAnimation.slideAndFade,
-       );
-
-  final List<MinSelectItem<T>> items;
-  final List<MinSelectItem<T>> filteredItems;
-  final T? selectedValue;
-  final int? activeIndex;
-  final ValueChanged<int?> onActiveIndexChanged;
-  final ValueChanged<int> onSelected;
-  final double? width;
-  final double? maxHeight;
-  final bool searchable;
-  final TextEditingController searchController;
-  final FocusNode searchFocusNode;
-  final String? searchPlaceholder;
-
-  @override
-  Widget wrapOverlay(BuildContext anchorContext, Widget overlayChild) {
-    final theme = MinTheme.maybeOf(anchorContext);
-    if (theme == null) return overlayChild;
-    return MinTheme(data: theme, child: overlayChild);
-  }
-
-  @override
-  Widget buildContent(BuildContext context, MinFloatingController controller) {
-    final theme = context.theme;
-    final flatFiltered = filteredItems.whereType<MinSelectOption<T>>().toList();
-
-    Widget panel = MinCard(
-      padding: EdgeInsets.all(theme.spacing.px),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (searchable) ...[
-            MinInput(
-              controller: searchController,
-              focusNode: searchFocusNode,
-              placeholder: searchPlaceholder ?? context.minLocale.selectSearchPlaceholder,
-              leading: Icon(
-                // Using a simple text icon to avoid importing tabler_icons
-                // in the package. The consumer can override with a custom icon.
-                // ignore: deprecated_member_use
-                const IconData(0xe800, fontFamily: 'MaterialIcons'),
-                size: 16,
-              ),
-              style: MinInputStyle.ghost(theme),
-            ),
-            SizedBox(height: theme.spacing.px),
-          ],
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: maxHeight ?? theme.spacing.s12 * 4,
-            ),
-            child: SingleChildScrollView(
-              primary: false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: _buildItems(context, flatFiltered),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (width != null) {
-      panel = SizedBox(width: width, child: panel);
-    }
-
-    return panel;
-  }
-
-  List<Widget> _buildItems(
-    BuildContext context,
-    List<MinSelectOption<T>> flatFiltered,
-  ) {
-    final theme = context.theme;
-    final widgets = <Widget>[];
-    var flatIndex = 0;
-
-    for (final item in filteredItems) {
-      if (item is MinSelectSection<T>) {
-        if (widgets.isNotEmpty) {
-          widgets.add(
-            Container(
-              height: 1,
-              margin: EdgeInsets.symmetric(horizontal: theme.spacing.s2),
-              color: theme.colors.border,
-            ),
-          );
-        }
-        widgets.add(
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: theme.spacing.s3,
-              vertical: theme.spacing.s2,
-            ),
-            child: Text(
-              item.label,
-              style: theme.typography.small.copyWith(
-                color: theme.colors.mutedForeground,
-              ),
-            ),
-          ),
-        );
-      } else if (item is MinSelectOption<T>) {
-        final index = flatIndex;
-        final isSelected = item.value == selectedValue;
-        final isActive = activeIndex == index;
-        widgets.add(
-          _MinSelectOptionTile<T>(
-            option: item,
-            isSelected: isSelected,
-            isActive: isActive,
-            onHover: () => onActiveIndexChanged(index),
-            onTap: () => onSelected(index),
-          ),
-        );
-        flatIndex++;
-      }
-    }
-
-    return widgets;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Option tile
-// ---------------------------------------------------------------------------
-
-class _MinSelectOptionTile<T> extends StatefulWidget {
-  const _MinSelectOptionTile({
-    required this.option,
-    required this.isSelected,
-    required this.isActive,
-    required this.onHover,
-    required this.onTap,
-  });
-
-  final MinSelectOption<T> option;
-  final bool isSelected;
-  final bool isActive;
-  final VoidCallback onHover;
-  final VoidCallback onTap;
-
-  @override
-  State<_MinSelectOptionTile<T>> createState() =>
-      _MinSelectOptionTileState<T>();
-}
-
-class _MinSelectOptionTileState<T> extends State<_MinSelectOptionTile<T>> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.theme;
-    final enabled = widget.option.enabled;
-    final highlighted = widget.isActive || _hovered;
-
-    final background =
-        highlighted ? theme.colors.accent : theme.colors.popover;
-    final foreground =
-        enabled ? theme.colors.popoverForeground : theme.colors.mutedForeground;
-
-    return MouseRegion(
-      cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      onEnter: (_) {
-        setState(() => _hovered = true);
-        if (enabled) widget.onHover();
-      },
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: enabled ? widget.onTap : null,
-        child: AnimatedContainer(
-          duration: theme.motion.fast,
-          curve: theme.motion.curve,
-          padding: EdgeInsets.symmetric(
-            horizontal: theme.spacing.s3,
-            vertical: theme.spacing.s2,
-          ),
-          color: background,
-          child: Row(
-            children: [
-              if (widget.option.leading != null) ...[
-                widget.option.leading!,
-                SizedBox(width: theme.spacing.s2),
-              ],
-              Expanded(
-                child: Text(
-                  widget.option.label,
-                  style: theme.typography.body.copyWith(color: foreground),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (widget.option.trailing != null) ...[
-                SizedBox(width: theme.spacing.s2),
-                widget.option.trailing!,
-              ],
-              if (widget.isSelected) ...[
-                SizedBox(width: theme.spacing.s2),
-                Text(
-                  '✓',
-                  style: theme.typography.body.copyWith(
-                    color: theme.colors.primary,
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Trigger style
-// ---------------------------------------------------------------------------
-
 class _MinSelectStyle {
   const _MinSelectStyle({
     required this.background,
@@ -732,36 +478,5 @@ class _MinSelectStyle {
           radius: theme.radius.lg,
         );
     }
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Chevron painter
-// ---------------------------------------------------------------------------
-
-class _ChevronPainter extends CustomPainter {
-  const _ChevronPainter({required this.color});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.8
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final path = Path()
-      ..moveTo(size.width * 0.2, size.height * 0.35)
-      ..lineTo(size.width * 0.5, size.height * 0.65)
-      ..lineTo(size.width * 0.8, size.height * 0.35);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _ChevronPainter oldDelegate) {
-    return oldDelegate.color != color;
   }
 }

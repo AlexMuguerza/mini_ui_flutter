@@ -1,3 +1,23 @@
+## 1.2.0
+
+### Components
+- `MinToast` — sistema de notificaciones toast con overlay global, auto-close, timer bar, pausa al hover, swipe para descartar, colas por posición, máx. visibles por grupo
+- `MinDrawer` — componente extraído de `MinScaffold` como widget independiente con `MinDrawerController`
+
+### Refactor
+- Componentes grandes divididos en subdirectorios con `part`/`part of` para mejorar mantenibilidad
+- `MinToastVariant` simplificado: solo `floating` (se eliminó `fixed`)
+
+### Fixes
+- `MinToast` — timer bar se reiniciaba al aparecer un segundo toast porque el árbol de widgets cambiaba de `AnimatedOpacity` a `AbsorbPointer`. Solución: `AbsorbPointer(absorbing: index > 0)` incondicional
+- `MinToast` — fórmula `remainingDuration` estaba invertida (devolvía elapsed en lugar de remaining)
+- `MinSelect` — búsqueda no filtraba porque faltaba listener en `_searchController`
+- `MinSelect` — `RangeError` al seleccionar opciones por captura incorrecta de `flatIndex` en closures
+
+### Tests
+- `min_toast_test.dart` — 11 tests
+- Total: 128 tests (+6)
+
 ## 1.1.0
 
 ### Components

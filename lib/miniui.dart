@@ -16,15 +16,15 @@ export './theme/tokens.dart'
         MinMotionDefaults,
         MinThemeExtension;
 
-export './components/min_button.dart'
+export './components/min_button/min_button.dart'
     show MinButton, MinButtonSize, MinButtonVariant;
 
-export './components/min_button_group.dart'
+export './components/min_button_group/min_button_group.dart'
     show MinButtonGroup, MinButtonGroupOption;
 
 export './components/min_card.dart' show MinCard;
 
-export './components/min_select.dart'
+export './components/min_select/min_select.dart'
     show
         MinSelect,
         MinSelectItem,
@@ -32,7 +32,7 @@ export './components/min_select.dart'
         MinSelectSection,
         MinSelectSize;
 
-export './components/min_date_picker.dart' show MinDatePicker;
+export './components/min_date_picker/min_date_picker.dart' show MinDatePicker;
 
 export './components/min_popover.dart' show MinPopover, MinPopoverAnchor;
 
@@ -40,20 +40,20 @@ export 'resources/min_floating/min_anchor.dart' show MinUiAnchorSide;
 
 export './components/min_switch.dart' show MinSwitch, MinSwitchSize;
 
-export './components/min_checkbox.dart' show MinCheckbox, MinCheckboxSize;
+export './components/min_checkbox/min_checkbox.dart' show MinCheckbox, MinCheckboxSize;
 
 export './components/min_app_bar.dart' show MinAppBar, MinAppBarSize;
 
-export './components/min_input.dart'
+export './components/min_input/min_input.dart'
     show MinInput, MinInputType, MinInputVariant, MinInputStyle;
 
 export 'resources/min_floating/min_portal.dart' show MinPortal;
 
 export './components/min_scaffold.dart' show MinScaffold;
 
-export './components/min_drawer.dart' show MinDrawer, MinDrawerController;
+export './components/min_drawer/min_drawer.dart' show MinDrawer, MinDrawerController;
 
-export './components/min_progress.dart'
+export './components/min_progress/min_progress.dart'
     show MinProgress, MinProgressVariant;
 
 export './components/min_tooltip.dart' show MinTooltip;

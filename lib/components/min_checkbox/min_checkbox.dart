@@ -1,33 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import '../theme/tokens.dart';
+import '../../theme/tokens.dart';
 
-/// Tamaños disponibles para [MinCheckbox].
+part 'min_checkbox_style.dart';
+part 'min_checkbox_painter.dart';
+
 enum MinCheckboxSize { sm, md, lg }
 
-/// Checkbox con toggle, soporte de teclado y personalización de icono.
-///
-/// Se usa para selección de una o más opciones de un conjunto.
-/// Soporta navegación por teclado (espacio/enter) y personalización
-/// completa del icono de verificación.
-///
-/// ### Uso básico
-/// ```dart
-/// MinCheckbox(
-///   value: _isSelected,
-///   onChanged: (value) => setState(() => _isSelected = value),
-/// )
-/// ```
-///
-/// ### Con icono personalizado
-/// ```dart
-/// MinCheckbox(
-///   value: _isSelected,
-///   onChanged: (value) => setState(() => _isSelected = value),
-///   checkIcon: Icon(Icons.check, size: 14),
-/// )
-/// ```
 class MinCheckbox extends StatefulWidget {
   const MinCheckbox({
     super.key,
@@ -188,157 +168,5 @@ class _MinCheckboxState extends State<MinCheckbox> {
         ),
       ),
     );
-  }
-}
-
-class _CheckboxStyle {
-  const _CheckboxStyle({
-    required this.size,
-    required this.radius,
-    required this.iconSize,
-    required this.backgroundColor,
-    required this.borderColor,
-    required this.borderWidth,
-    required this.checkColor,
-    required this.shadows,
-  });
-
-  final double size;
-  final double radius;
-  final double iconSize;
-  final Color backgroundColor;
-  final Color borderColor;
-  final double borderWidth;
-  final Color checkColor;
-  final List<BoxShadow> shadows;
-
-  static _CheckboxStyle resolve({
-    required MinThemeData theme,
-    required MinCheckboxSize size,
-    required bool hovered,
-    required bool focused,
-    required bool enabled,
-    required bool checked,
-    Color? side,
-    Color? checkColor,
-  }) {
-    final sizeStyle = _CheckboxSizeStyle.resolve(theme, size);
-
-    Color backgroundColor;
-    Color borderColor;
-    Color resolvedCheckColor;
-    List<BoxShadow> shadows = const [];
-
-    if (!enabled) {
-      backgroundColor = checked ? theme.colors.muted : theme.colors.muted;
-      borderColor = side ?? theme.colors.input;
-      resolvedCheckColor = theme.colors.mutedForeground;
-    } else if (checked) {
-      backgroundColor = theme.colors.primary;
-      borderColor = theme.colors.primary;
-      resolvedCheckColor = checkColor ?? theme.colors.primaryForeground;
-    } else if (hovered) {
-      backgroundColor = theme.colors.muted;
-      borderColor = side ?? theme.colors.ring;
-      resolvedCheckColor = theme.colors.foreground;
-    } else {
-      backgroundColor = const Color(0x00000000);
-      borderColor = side ?? theme.colors.border;
-      resolvedCheckColor = theme.colors.foreground;
-    }
-
-    if (focused && enabled) {
-      shadows = [
-        BoxShadow(
-          blurRadius: theme.spacing.s2,
-          color: theme.colors.ring.withAlpha(70),
-        ),
-      ];
-    }
-
-    return _CheckboxStyle(
-      size: sizeStyle.size,
-      radius: sizeStyle.radius,
-      iconSize: sizeStyle.iconSize,
-      backgroundColor: backgroundColor,
-      borderColor: borderColor,
-      borderWidth: sizeStyle.borderWidth,
-      checkColor: resolvedCheckColor,
-      shadows: shadows,
-    );
-  }
-}
-
-class _CheckboxSizeStyle {
-  const _CheckboxSizeStyle({
-    required this.size,
-    required this.radius,
-    required this.iconSize,
-    required this.borderWidth,
-  });
-
-  final double size;
-  final double radius;
-  final double iconSize;
-  final double borderWidth;
-
-  static _CheckboxSizeStyle resolve(MinThemeData theme, MinCheckboxSize size) {
-    switch (size) {
-      case MinCheckboxSize.sm:
-        return const _CheckboxSizeStyle(
-          size: 18,
-          radius: 3,
-          iconSize: 14,
-          borderWidth: 1.5,
-        );
-      case MinCheckboxSize.md:
-        return const _CheckboxSizeStyle(
-          size: 22,
-          radius: 4,
-          iconSize: 18,
-          borderWidth: 2,
-        );
-      case MinCheckboxSize.lg:
-        return const _CheckboxSizeStyle(
-          size: 26,
-          radius: 5,
-          iconSize: 20,
-          borderWidth: 3,
-        );
-    }
-  }
-}
-
-/// CustomPainter que dibuja un checkmark por defecto
-class _DefaultCheckmarkPainter extends CustomPainter {
-  _DefaultCheckmarkPainter({required this.color});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 2.0
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
-      ..style = PaintingStyle.stroke;
-
-    final path = Path();
-
-    // Dibuja un checkmark (✓)
-    // Punto inicial (esquina inferior izquierda)
-    path.moveTo(size.width * 0.25, size.height * 0.55);
-    // Línea diagonal hacia el centro
-    path.lineTo(size.width * 0.45, size.height * 0.75);
-    // Línea diagonal hacia la esquina superior derecha
-    path.lineTo(size.width * 0.8, size.height * 0.25);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _DefaultCheckmarkPainter oldDelegate) {
-    return oldDelegate.color != color;
   }
 }

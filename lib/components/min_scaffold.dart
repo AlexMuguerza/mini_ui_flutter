@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import '../theme/tokens.dart';
 
-import 'min_drawer.dart';
+import 'min_drawer/min_drawer.dart';
 
 /// Andamiaje de página con app bar, body, bottom bar, FAB y drawers.
 ///

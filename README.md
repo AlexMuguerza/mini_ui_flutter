@@ -12,7 +12,7 @@ Un paquete de componentes UI para Flutter con sistema de temas basado en [shadcn
 
 ```yaml
 dependencies:
-  mini_ui_flutter: ^1.1.0
+  mini_ui_flutter: ^1.2.0
 ```
 
 ```bash
@@ -95,7 +95,8 @@ MinLocalizations(
 | `MinCheckbox` | Checkbox con tamaños, icono personalizable, semanticLabel |
 | `MinAppBar` | Barra de aplicación con leading, title, trailing |
 | `MinScaffold` | Andamiaje de página con appBar, FAB, drawers, resizeToAvoidBottomInset |
-| `MinDrawer` | Drawer start/end con gestos, overlay, modo persistente, Escape para cerrar |
+| `MinToast` | Sistema de notificaciones toast animadas con auto-close, timer bar, colas por posición |
+| `MinDrawer` | Drawer start/end con `MinDrawerController`, gestos, overlay, modo persistente, Escape |
 | `MinPopover` | Contenedor flotante anclado con contenido custom |
 | `MinProgress` | Indicador de progreso linear y circular, determinable e indeterminable |
 | `MinTooltip` | Tooltip flotante con hover, delay configurable, posicionamiento automático |
@@ -152,18 +153,21 @@ lib/
 │   ├── motion.dart              # Animaciones
 │   └── theme.dart               # MinTheme, MinThemeData
 ├── components/                  # Widgets UI
-│   ├── min_button.dart
-│   ├── min_button_group.dart
-│   ├── min_card.dart
-│   ├── min_select.dart
-│   ├── min_date_picker.dart
-│   ├── min_input.dart
-│   ├── min_switch.dart
-│   ├── min_checkbox.dart
 │   ├── min_app_bar.dart
+│   ├── min_button/              # MinButton, MinButtonStyle, MinButtonSpinner
+│   ├── min_button_group/        # MinButtonGroup, MinButtonGroupButton
+│   ├── min_card.dart
+│   ├── min_checkbox/            # MinCheckbox, MinCheckboxStyle, MinCheckboxPainter
+│   ├── min_date_picker/         # MinDatePicker, panel, trigger, cells, months, years
+│   ├── min_drawer/              # MinDrawer, MinDrawerController
+│   ├── min_input/               # MinInput, MinInputStyle
+│   ├── min_popover.dart
+│   ├── min_progress/            # MinProgress, Linear, Circular
 │   ├── min_scaffold.dart
-│   ├── min_drawer.dart
-│   └── min_popover.dart
+│   ├── min_select/              # MinSelect, Floating, OptionTile, Chevron
+│   ├── min_switch.dart
+│   ├── min_toast/               # MinToast, Type, Action, Position, Item, Entry
+│   └── min_tooltip.dart
 └── resources/min_floating/      # Primitivas de overlay (interno)
 ```
 
@@ -172,7 +176,7 @@ lib/
 ```bash
 flutter pub get              # Instalar dependencias
 flutter analyze              # Lint + análisis estático
-flutter test                 # Ejecutar tests (122 tests)
+flutter test                 # Ejecutar tests (128 tests)
 cd example && flutter run    # Ejecutar app de demo
 ```
 
