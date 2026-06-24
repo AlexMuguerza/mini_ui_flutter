@@ -8,6 +8,12 @@ Un paquete de componentes UI para Flutter con sistema de temas basado en [shadcn
 ## Demo 
 [![demo](https://img.shields.io/badge/demo-online-blue)](https://alexmuguerza.github.io/mini_ui_flutter)
 
+### Vistazos
+<img width="337" height="737" alt="image" src="https://github.com/user-attachments/assets/1551a064-9953-4af7-a01e-815f87300bc7" />
+<img width="336" height="737" alt="image" src="https://github.com/user-attachments/assets/6332c930-c07e-4017-8bb8-8199cb088d81" />
+<img width="336" height="737" alt="WhatsApp Image 2026-06-23 at 7 41 30 PM" src="https://github.com/user-attachments/assets/75e32f89-91a8-40c4-af31-62627da4f8c8" />
+
+
 ## Instalación via pub.dev
 
 ```yaml
