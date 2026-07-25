@@ -40,9 +40,18 @@ export 'resources/min_floating/min_anchor.dart' show MinUiAnchorSide;
 
 export './components/min_switch.dart' show MinSwitch, MinSwitchSize;
 
+export './components/min_tabs/min_tabs.dart'
+    show MinTabs, MinTabsOption, MinTabsSize, MinTabsVariant;
+
 export './components/min_checkbox/min_checkbox.dart' show MinCheckbox, MinCheckboxSize;
 
 export './components/min_app_bar.dart' show MinAppBar, MinAppBarSize;
+
+export './components/min_badge.dart'
+    show MinBadge, MinBadgeVariant, MinBadgeWrapper, MinBadgePosition;
+
+export './components/min_accordion.dart'
+    show MinAccordion, MinAccordionOption, MinAccordionSize;
 
 export './components/min_input/min_input.dart'
     show MinInput, MinInputType, MinInputVariant, MinInputStyle;
