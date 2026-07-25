@@ -18,7 +18,7 @@ Un paquete de componentes UI para Flutter con sistema de temas basado en [shadcn
 
 ```yaml
 dependencies:
-  mini_ui_flutter: ^1.2.0
+  mini_ui_flutter: ^1.3.0
 ```
 
 ```bash
@@ -106,6 +106,9 @@ MinLocalizations(
 | `MinPopover` | Contenedor flotante anclado con contenido custom |
 | `MinProgress` | Indicador de progreso linear y circular, determinable e indeterminable |
 | `MinTooltip` | Tooltip flotante con hover, delay configurable, posicionamiento automático |
+| `MinTabs<T>` | Tabs controladas con variantes `underline` y `pill`, navegación por teclado |
+| `MinBadge` | Etiqueta compacta con variantes; `MinBadgeWrapper` para superponer a un widget |
+| `MinAccordion<T>` | Acordeón expandible/colapsable con modo simple o múltiple |
 
 ## Accesibilidad
 
@@ -182,7 +185,7 @@ lib/
 ```bash
 flutter pub get              # Instalar dependencias
 flutter analyze              # Lint + análisis estático
-flutter test                 # Ejecutar tests (128 tests)
+flutter test                 # Ejecutar tests (147 tests)
 cd example && flutter run    # Ejecutar app de demo
 ```
 

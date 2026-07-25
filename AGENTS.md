@@ -5,7 +5,7 @@
 ```bash
 flutter pub get              # Install dependencies (run first after clone)
 flutter analyze              # Lint + static analysis (flutter_lints via analysis_options.yaml)
-flutter test                 # Run tests (95 tests across 10 files)
+flutter test                 # Run tests (147 tests across 21 files)
 cd example && flutter run    # Run the demo app (depends on parent via path: ..)
 ```
 
@@ -17,7 +17,7 @@ Single Flutter package. Not a monorepo. No CI, no pre-commit hooks, no task runn
 
 - **SDK**: Flutter >=1.17.0, Dart ^3.11.1
 - **Lint**: `flutter_lints ^6.0.0` (rules in `analysis_options.yaml` at root)
-- **Tests**: 95 tests across 10 files in `test/`. Run with `flutter test`.
+- **Tests**: 147 tests across 21 files in `test/`. Run with `flutter test`.
 
 ## Structure
 
@@ -34,17 +34,24 @@ lib/
 │   ├── shadows.dart          # MinShadows
 │   └── motion.dart           # MinMotion
 ├── components/               # UI widgets (all read theme from BuildContext)
-│   ├── min_button.dart       # MinButton — variant/size enums, keyboard support, loading state
-│   ├── min_select.dart       # MinSelect<T> — typed selection with searchable, sections, leading/trailing
-│   ├── min_date_picker.dart  # MinDatePicker — month grid selector, "Hoy" and "Meses" toggle
-│   ├── min_popover.dart      # MinPopover, MinPopoverAnchor
-│   ├── min_switch.dart       # MinSwitch
-│   ├── min_checkbox.dart     # MinCheckbox
-│   ├── min_app_bar.dart      # MinAppBar
-│   ├── min_input.dart        # MinInput
+│   ├── min_button/           # MinButton — variant/size enums, keyboard, loading
+│   ├── min_button_group/     # MinButtonGroup<T> — selection group, arrow-key nav
 │   ├── min_card.dart         # MinCard — default padding from theme, margin support
+│   ├── min_accordion.dart    # MinAccordion<T> — single/multiple modes
+│   ├── min_badge.dart        # MinBadge, MinBadgeWrapper, MinBadgePosition
+│   ├── min_checkbox/         # MinCheckbox — sm/md/lg, custom icon
+│   ├── min_date_picker/      # MinDatePicker — month grid, "Hoy" + "Meses" toggle
+│   ├── min_drawer/           # MinDrawer, MinDrawerController
+│   ├── min_input/            # MinInput — types, variants, outline/filled/ghost
+│   ├── min_popover.dart      # MinPopover, MinPopoverAnchor
+│   ├── min_progress/         # MinProgress — linear & circular, determinate/indeterminate
 │   ├── min_scaffold.dart     # MinScaffold
-│   └── min_drawer.dart       # MinDrawer, MinDrawerController
+│   ├── min_select/           # MinSelect<T> — searchable, sections, leading/trailing
+│   ├── min_switch.dart       # MinSwitch
+│   ├── min_app_bar.dart      # MinAppBar
+│   ├── min_tabs/             # MinTabs<T> — underline & pill variants
+│   ├── min_toast/            # MinToast — overlay notifications, queue, timer
+│   └── min_tooltip.dart      # MinTooltip — hover/long-press floating
 └── resources/min_floating/   # Floating/overlay primitives (internal)
     ├── min_portal.dart       # MinPortal (only resource exported publicly)
     ├── min_floating_base.dart
@@ -67,10 +74,10 @@ example/                      # Demo Flutter app
 
 ## Recent Changes
 
-- **MinSelect search bug**: `_searchController` had no listener — typing in search didn't trigger `setState`, so filtered results never updated. Fix: added `_searchController.addListener(_handleSearchChanged)` in `initState`. Test: `searchable filters options as user types`.
-- **MinSelect closure bug**: `_buildItems` captured `flatIndex` by reference in closures, causing `RangeError` when selecting options. Fix: `final index = flatIndex;` before closures.
-- **MinDatePicker**: Month selector grid removed from header. Added "Meses" button next to "Hoy" at bottom. Toggling between calendar and month grid via `_showMonthSelector` state.
-- **MinCard**: Added with default padding from `theme.spacing.s4`, margin support.
-- **MinDrawer**: Added `drawerBackgroundColor`/`endDrawerBackgroundColor` params (default: `theme.colors.background`).
-- **Example app**: Widgets extracted to `example/lib/presentation/app/widgets/`. AppSection class with TablerIcons. Theme toggle with transparent system UI.
-- **AppViewState**: `selectedValue` split into `selectedValue` (simple), `selectedCountry` (searchable), `selectedAction` (leading/trailing) to avoid cross-variant state conflicts.
+- **New components**: MinTabs, MinBadge/MinBadgeWrapper, MinAccordion added to the public API and registered in the demo app (Badges, Tabs, Accordion views).
+- **MinToast**: global overlay manager with swipe-to-dismiss, hover-pause timer, per-position maxVisible. Variant simplified to floating only.
+- **MinProgress / MinTooltip**: linear/circular progress indicators and hover/long-press tooltip with floating infrastructure.
+- **Localization**: MinLocalizations InheritedWidget with built-in es/en and partial overrides via `MinLocale`.
+- **MinSelect search bug**: fixed missing listener on `_searchController`.
+- **MinSelect closure bug**: `_buildItems` captured `flatIndex` by reference; resolved with `final index = flatIndex;` before closures.
+- **Demo app**: extracted into `example/lib/presentation/app/widgets/`, transparent system UI (edgeToEdge), theme variants Zinc/Slate/Violet toggled from Settings.
