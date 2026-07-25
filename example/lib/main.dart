@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_ui_flutter/miniui.dart';
@@ -7,6 +8,7 @@ import 'presentation/app/app_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const MyApp());
 }
 

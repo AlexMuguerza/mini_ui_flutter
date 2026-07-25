@@ -46,6 +46,7 @@ class AppSection {
   static const switches = AppSection._('Switches', TablerIcons.toggle_right);
   static const checkboxes = AppSection._('Checkboxes', TablerIcons.checkbox);
   static const appBar = AppSection._('App Bar', TablerIcons.layout_navbar);
+  static const badges = AppSection._('Badges', TablerIcons.tag);
   static const datePicker = AppSection._('Date Picker', TablerIcons.calendar);
   static const select = AppSection._('Select', TablerIcons.list);
   static const buttonGroup = AppSection._(
@@ -58,6 +59,8 @@ class AppSection {
   );
   static const tooltip = AppSection._('Tooltip', TablerIcons.info_circle);
   static const toast = AppSection._('Toast', TablerIcons.bell);
+  static const tabs = AppSection._('Tabs', TablerIcons.arrows_right_left);
+  static const accordion = AppSection._('Accordion', TablerIcons.arrows_sort);
   static const settings = AppSection._('Settings', TablerIcons.settings);
 
   static const values = [
@@ -67,12 +70,15 @@ class AppSection {
     switches,
     checkboxes,
     appBar,
+    badges,
     datePicker,
     select,
     buttonGroup,
     progress,
     tooltip,
     toast,
+    tabs,
+    accordion,
     settings,
   ];
 }
@@ -115,6 +121,7 @@ class AppCubit extends Cubit<AppState> {
           systemNavigationBarColor: Color(0x00000000),
           systemNavigationBarDividerColor: Color(0x00000000),
           systemNavigationBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.light,
         ),
       );
     } else {
@@ -125,6 +132,7 @@ class AppCubit extends Cubit<AppState> {
           systemNavigationBarColor: Color(0x00000000),
           systemNavigationBarDividerColor: Color(0x00000000),
           systemNavigationBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
         ),
       );
     }

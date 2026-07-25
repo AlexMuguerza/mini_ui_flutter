@@ -1,5 +1,6 @@
 export './drawer_menu.dart';
 export './app_bar_view.dart';
+export './badges_view.dart';
 export './buttons_view.dart';
 export './cards_view.dart';
 export './checkboxes_view.dart';
@@ -12,3 +13,5 @@ export './button_group_view.dart';
 export './progress_view.dart';
 export './tooltip_view.dart';
 export './toast_view.dart';
+export './tabs_view.dart';
+export './accordion_view.dart';

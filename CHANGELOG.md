@@ -1,3 +1,21 @@
+## 1.3.0
+
+### Components
+- `MinTabs<T>` — barra de tabs controlada con variantes `underline` y `pill`, tres tamaños, navegación por teclado (flechas, Enter/Espacio), foco visible y scroll horizontal opcional.
+- `MinBadge` — etiqueta con variantes `primary`/`secondary`/`outline`/`destructive`. `MinBadgeWrapper` superpone un badge en cualquier esquina de un widget hijo para indicadores de notificación.
+- `MinAccordion<T>` — sección expandible/colapsable con header y body configurables, modo simple o múltiple, tres tamaños y soporte de teclado.
+
+### Docs
+- `MinPopover` — correcciones en el dartdoc (la clase se llamaba `MinPopover`, no `MiniPopover`) y renombre del widget privado a `_MinPopoverPanel` siguiendo la convención del paquete.
+
+### Example app
+- Nuevas vistas demo: `BadgesView`, `TabsView`, `AccordionView` registradas en `AppSection`/`AppView`.
+- `EdgeToEdge` activado vía `SystemChrome.setEnabledSystemUIMode` y ajustes de `statusBarBrightness` en `AppCubit`.
+
+### Tests
+- `min_tabs_test.dart`, `min_badge_test.dart`, `min_accordion_test.dart` — 24 tests en total.
+- Total: 147 tests en 18 archivos.
+
 ## 1.2.0
 
 ### Components

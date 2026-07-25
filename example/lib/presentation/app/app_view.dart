@@ -58,11 +58,14 @@ class AppView extends StatelessWidget {
     if (section == AppSection.switches) return const SwitchesView();
     if (section == AppSection.checkboxes) return const CheckboxesView();
     if (section == AppSection.appBar) return const AppBarView();
+    if (section == AppSection.badges) return const BadgesView();
     if (section == AppSection.datePicker) return const DatePickerView();
     if (section == AppSection.buttonGroup) return const ButtonGroupView();
     if (section == AppSection.progress) return const ProgressView();
     if (section == AppSection.tooltip) return const TooltipView();
     if (section == AppSection.toast) return const ToastView();
+    if (section == AppSection.tabs) return const TabsView();
+    if (section == AppSection.accordion) return const AccordionView();
     if (section == AppSection.settings) return const SettingsView();
     return const SelectView();
   }
