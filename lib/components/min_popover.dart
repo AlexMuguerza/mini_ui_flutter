@@ -9,10 +9,10 @@ import 'min_card.dart';
 /// A popover anchored to any widget. Replaces [MinPopover].
 ///
 /// ```dart
-/// MiniPopover(
+/// MinPopover(
 ///   content: (ctx, ctrl) => Text('Hello'),
 ///   child: ElevatedButton(
-///     onPressed: null, // MiniPopover handles the tap
+///     onPressed: null, // MinPopover handles the tap
 ///     child: Text('Open'),
 ///   ),
 /// )
@@ -20,7 +20,7 @@ import 'min_card.dart';
 ///
 /// Controlled:
 /// ```dart
-/// MiniPopover(
+/// MinPopover(
 ///   controller: _ctrl,
 ///   content: (ctx, ctrl) => MyMenu(onSelect: (_) => ctrl.hide()),
 ///   child: MyButton(),
@@ -81,12 +81,12 @@ class MinPopover extends MinFloatingBase {
 
   @override
   Widget buildContent(BuildContext context, MinFloatingController controller) {
-    return _MiniPopoverPanel(popover: this, controller: controller);
+    return _MinPopoverPanel(popover: this, controller: controller);
   }
 }
 
-class _MiniPopoverPanel extends StatelessWidget {
-  const _MiniPopoverPanel({required this.popover, required this.controller});
+class _MinPopoverPanel extends StatelessWidget {
+  const _MinPopoverPanel({required this.popover, required this.controller});
 
   final MinPopover popover;
   final MinFloatingController controller;
