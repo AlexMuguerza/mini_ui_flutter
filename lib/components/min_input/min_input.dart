@@ -6,20 +6,9 @@ import 'min_input_style.dart';
 
 export 'min_input_style.dart' show MinInputStyle;
 
-enum MinInputType {
-  text,
-  email,
-  password,
-  number,
-  phone,
-  url,
-  multiline,
-}
+enum MinInputType { text, email, password, number, phone, url, multiline }
 
-enum MinInputVariant {
-  normal,
-  error,
-}
+enum MinInputVariant { normal, error }
 
 class MinInput extends StatefulWidget {
   const MinInput({
@@ -379,9 +368,8 @@ class _MinInputState extends State<MinInput> {
 
     Widget content = inputArea;
 
-    final showCounterWidget = widget.showCounter &&
-        widget.maxLength != null &&
-        widget.maxLength! > 0;
+    final showCounterWidget =
+        widget.showCounter && widget.maxLength != null && widget.maxLength! > 0;
 
     if (showCounterWidget) {
       final currentLength = _controller.text.length;

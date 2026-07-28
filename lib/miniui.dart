@@ -56,6 +56,8 @@ export './components/min_accordion.dart'
 export './components/min_input/min_input.dart'
     show MinInput, MinInputType, MinInputVariant, MinInputStyle;
 
+export './components/min_input/min_form_input.dart' show MinFormInput;
+
 export 'resources/min_floating/min_portal.dart' show MinPortal;
 
 export './components/min_scaffold.dart' show MinScaffold;
