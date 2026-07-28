@@ -5,7 +5,7 @@
 ```bash
 flutter pub get              # Install dependencies (run first after clone)
 flutter analyze              # Lint + static analysis (flutter_lints via analysis_options.yaml)
-flutter test                 # Run tests (147 tests across 21 files)
+flutter test                 # Run tests (184 tests across 22 files)
 cd example && flutter run    # Run the demo app (depends on parent via path: ..)
 ```
 
@@ -17,7 +17,7 @@ Single Flutter package. Not a monorepo. No CI, no pre-commit hooks, no task runn
 
 - **SDK**: Flutter >=1.17.0, Dart ^3.11.1
 - **Lint**: `flutter_lints ^6.0.0` (rules in `analysis_options.yaml` at root)
-- **Tests**: 147 tests across 21 files in `test/`. Run with `flutter test`.
+- **Tests**: 184 tests across 22 files in `test/`. Run with `flutter test`.
 
 ## Structure
 
@@ -42,7 +42,7 @@ lib/
 │   ├── min_checkbox/         # MinCheckbox — sm/md/lg, custom icon
 │   ├── min_date_picker/      # MinDatePicker — month grid, "Hoy" + "Meses" toggle
 │   ├── min_drawer/           # MinDrawer, MinDrawerController
-│   ├── min_input/            # MinInput — types, variants, outline/filled/ghost
+│   ├── min_input/            # MinInput — types, variants, outline/filled/ghost; MinFormInput FormField wrapper
 │   ├── min_popover.dart      # MinPopover, MinPopoverAnchor
 │   ├── min_progress/         # MinProgress — linear & circular, determinate/indeterminate
 │   ├── min_scaffold.dart     # MinScaffold
@@ -74,6 +74,7 @@ example/                      # Demo Flutter app
 
 ## Recent Changes
 
+- **MinFormInput**: `FormField<String>` wrapper around `MinInput` with controller, initialValue, validator, autovalidateMode, forceErrorText, onChanged, onSubmitted, onSaved, reset, enabled, leading/trailing, multiline, maxLength, inputFormatters, focusNode, and 37 tests.
 - **New components**: MinTabs, MinBadge/MinBadgeWrapper, MinAccordion added to the public API and registered in the demo app (Badges, Tabs, Accordion views).
 - **MinToast**: global overlay manager with swipe-to-dismiss, hover-pause timer, per-position maxVisible. Variant simplified to floating only.
 - **MinProgress / MinTooltip**: linear/circular progress indicators and hover/long-press tooltip with floating infrastructure.
