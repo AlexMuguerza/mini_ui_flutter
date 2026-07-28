@@ -1,3 +1,15 @@
+## 1.4.0
+
+### Components
+- `MinFormInput` — `FormField<String>` wrapper around `MinInput` con soporte completo de formularios: `controller`, `initialValue`, `validator`, `autovalidateMode`, `forceErrorText`, `onChanged`, `onSubmitted`, `onSaved`, `reset`, `enabled`, `leading`/`trailing`, multiline, `maxLength`, `minLines`, `inputFormatters`, `focusNode` y todas las variantes de `MinInput`.
+
+### Example app
+- `InputsView` — demo de `MinFormInput` con formulario de 4 campos (nombre, email, password, bio multiline), botones Guardar/Reset y resumen de valores guardados.
+
+### Tests
+- `min_form_input_test.dart` — 37 tests cubriendo rendering, validación, save/reset, disabled, controller sync, multiline asserts, inputFormatters, maxLength, focus, error variant y multi-field form.
+- Total: 184 tests en 22 archivos.
+
 ## 1.3.0
 
 ### Components
